@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-
 import express from "express";
+import bcrypt from "bcrypt";
 
 const app = express();
 const port = 3000;
@@ -15,12 +15,14 @@ app.listen(3000, function () {
 
 app.post("/customer", async (req, res) => {
   try {
-    const { username, password, email } = req.body;
+    const { username, password, email, bookName } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
     const customer = await prisma.customer.create({
       data: {
         username,
-        password,
+        password: hashedPassword,
         email,
+        customerBooks: {},
       },
     });
 
@@ -89,6 +91,36 @@ app.get("/customer", async (req, res) => {
 
   const customer = await prisma.customer.findMany();
   res.send({ count: customer.length, data: customer || [] });
+});
+
+app.get("/book", async (req, res) => {
+  const book = await prisma.book.findMany();
+  res.send({ data: book });
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const user = await prisma.customer.findUnique({
+      where: { username },
+    });
+
+    if (!user) {
+      return res.status(401).send({ message: "Invalid username " });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).send({ message: "Invalid password" });
+    }
+
+    res.send({ message: "Login successful" });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 });
 
 async function main() {}
