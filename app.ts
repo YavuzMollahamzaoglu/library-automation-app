@@ -32,6 +32,44 @@ app.post("/customer", async (req, res) => {
   }
 });
 
+app.post("/customer/:customerId/addbook", async (req, res) => {
+  try {
+    const { bookName } = req.body;
+    const customerId = parseInt(req.params.customerId);
+
+    const existingCustomer = await prisma.customer.findUnique({
+      where: { customerId },
+    });
+
+    if (!existingCustomer) {
+      return res.status(404).send({ message: "Customer not found" });
+    }
+
+    const existingBook = await prisma.book.findFirst({
+      where: { bookName: bookName },
+    });
+
+    if (!existingBook) {
+      return res.status(404).send({ message: "Book not found" });
+    }
+
+    // Müşteriye kitap ekle
+    const updatedCustomer = await prisma.customer.update({
+      where: { customerId },
+      data: {
+        customerBooks: {
+          connect: { bookId: existingBook.bookId },
+        },
+      },
+    });
+
+    res.send(`Book added to customer successfully`);
+  } catch (error) {
+    console.error("Error while adding book to customer:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 app.post("/book", async (req, res) => {
   try {
     const bookName = req.body.bookName || "DefaultBookName";
@@ -81,16 +119,31 @@ app.get("/customer", async (req, res) => {
   const email = req.query.email as string;
 
   if (email) {
-    const customer = await prisma.customer.findFirst({ where: { email } });
-    if (!customer) {
+    const customerWithBooks = await prisma.customer.findFirst({
+      where: { email },
+      include: {
+        customerBooks: true,
+      },
+    });
+
+    if (!customerWithBooks) {
       res.status(404);
       return res.send({ message: "User not found" });
     }
-    return res.send({ count: 1, data: [customer] });
+
+    return res.send({ count: 1, data: [customerWithBooks] });
   }
 
-  const customer = await prisma.customer.findMany();
-  res.send({ count: customer.length, data: customer || [] });
+  const customersWithBooks = await prisma.customer.findMany({
+    include: {
+      customerBooks: true,
+    },
+  });
+
+  res.send({
+    count: customersWithBooks.length,
+    data: customersWithBooks || [],
+  });
 });
 
 app.get("/book", async (req, res) => {
@@ -119,6 +172,55 @@ app.post("/login", async (req, res) => {
     res.send({ message: "Login successful" });
   } catch (error) {
     console.error("Error during login:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/bookcount", async (req, res) => {
+  try {
+    const bookCounts = await prisma.transaction.groupBy({
+      by: ["bookId"],
+      _count: true,
+    });
+
+    if (!bookCounts || bookCounts.length === 0) {
+      return res.status(404).send({ message: "No book transactions found" });
+    }
+
+    const mostBoughtBookId = bookCounts.reduce((prev, current) => {
+      return prev._count > current._count ? prev : current;
+    }).bookId;
+
+    const mostBoughtBook = await prisma.book.findUnique({
+      where: { bookId: mostBoughtBookId },
+    });
+
+    res.send({ mostBoughtBook });
+  } catch (error) {
+    console.error("Error fetching most bought book:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/customer/:customerId/history", async (req, res) => {
+  try {
+    const customerId = parseInt(req.params.customerId);
+
+    const customerTransactions = await prisma.transaction.findMany({
+      where: {
+        customerId: customerId,
+      },
+      include: {
+        book: true,
+      },
+      orderBy: {
+        timestamp: "desc",
+      },
+    });
+
+    res.send({ customerTransactions });
+  } catch (error) {
+    console.error("Error fetching customer transaction history:", error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
