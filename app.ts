@@ -236,7 +236,10 @@ app.get("/customer/:customerId/history", async (req, res) => {
 
     res.send({ customerTransactions });
   } catch (error) {
-    console.error("Error fetching customer transaction history:", error);
+    console.error(
+      "Problem while fetching customer transaction history:",
+      error
+    );
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
