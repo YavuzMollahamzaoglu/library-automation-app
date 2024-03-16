@@ -14,6 +14,7 @@ app.listen(3000, function () {
 });
 
 app.post("/customer", async (req, res) => {
+  // This post create our customer for loging and add to data
   try {
     const { username, password, email, bookName } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,6 +34,7 @@ app.post("/customer", async (req, res) => {
 });
 
 app.post("/customer/:customerId/addbook", async (req, res) => {
+  // this post adding books to our customer with customerId in endpoint
   try {
     const { bookName } = req.body;
     const customerId = parseInt(req.params.customerId);
@@ -53,7 +55,6 @@ app.post("/customer/:customerId/addbook", async (req, res) => {
       return res.status(404).send({ message: "Book not found" });
     }
 
-    // Müşteriye kitap ekle
     const updatedCustomer = await prisma.customer.update({
       where: { customerId },
       data: {
@@ -71,6 +72,7 @@ app.post("/customer/:customerId/addbook", async (req, res) => {
 });
 
 app.post("/book", async (req, res) => {
+  // this post add book and it's authors to our data
   try {
     const bookName = req.body.bookName || "DefaultBookName";
     const Book = await prisma.book.create({
@@ -116,6 +118,7 @@ app.put("/customer/:username", async (req, res) => {
 });
 
 app.get("/customer", async (req, res) => {
+  // getting all the customers and their informations  from our data
   const email = req.query.email as string;
 
   if (email) {
@@ -147,11 +150,13 @@ app.get("/customer", async (req, res) => {
 });
 
 app.get("/book", async (req, res) => {
+  //getting all our books and their authors
   const book = await prisma.book.findMany();
   res.send({ data: book });
 });
 
 app.post("/login", async (req, res) => {
+  //this is for our customers to login data in future we will create a page for this
   try {
     const { username, password } = req.body;
 
@@ -195,7 +200,17 @@ app.get("/bookcount", async (req, res) => {
       where: { bookId: mostBoughtBookId },
     });
 
-    res.send({ mostBoughtBook });
+    const bookTransactions = await prisma.transaction.findMany({
+      where: { bookId: mostBoughtBookId },
+      include: {
+        customer: true,
+      },
+      orderBy: {
+        timestamp: "desc",
+      },
+    });
+
+    res.send({ mostBoughtBook, bookTransactions });
   } catch (error) {
     console.error("Error fetching most bought book:", error);
     res.status(500).send({ message: "Internal Server Error" });
@@ -203,6 +218,7 @@ app.get("/bookcount", async (req, res) => {
 });
 
 app.get("/customer/:customerId/history", async (req, res) => {
+  //this will show which book did our customer have and had
   try {
     const customerId = parseInt(req.params.customerId);
 
