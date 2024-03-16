@@ -241,6 +241,36 @@ app.get("/customer/:customerId/history", async (req, res) => {
   }
 });
 
+app.put("/customer/:customerId/removebook", async (req, res) => {
+  // this endpoint will remove books from our customers database
+  try {
+    const { bookId } = req.body;
+    const customerId = parseInt(req.params.customerId);
+
+    const existingCustomer = await prisma.customer.findUnique({
+      where: { customerId },
+    });
+
+    if (!existingCustomer) {
+      return res.status(404).send({ message: "Customer not found" });
+    }
+
+    const updatedCustomer = await prisma.customer.update({
+      where: { customerId },
+      data: {
+        customerBooks: {
+          disconnect: { bookId: parseInt(bookId) },
+        },
+      },
+    });
+
+    res.send(`Book removed from customer successfully`);
+  } catch (error) {
+    console.error("Error while removing book from customer:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 async function main() {}
 
 main()
