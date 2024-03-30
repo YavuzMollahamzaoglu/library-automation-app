@@ -156,24 +156,28 @@ app.get("/book", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  //this is for our customers to login data in future we will create a page for this
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
 
-    const user = await prisma.customer.findUnique({
-      where: { username },
+    // Kullanıcıyı e-posta veya kullanıcı adıyla bul
+    const user = await prisma.customer.findFirst({
+      where: {
+        OR: [{ username: username }, { email: email }],
+      },
     });
 
     if (!user) {
-      return res.status(401).send({ message: "Invalid username " });
+      return res.status(401).send({ message: "Invalid username or email" });
     }
 
+    // Şifre karşılaştırması
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
       return res.status(401).send({ message: "Invalid password" });
     }
 
+    // Giriş başarılı
     res.send({ message: "Login successful" });
   } catch (error) {
     console.error("Error during login:", error);
