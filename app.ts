@@ -1,16 +1,26 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import bcrypt from "bcrypt";
+import { METHODS } from "http";
 
 const app = express();
-const port = 3000;
+const port = 3008;
+
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "http://localhost:3002/",
+    methods: ["GET", "POST"],
+  })
+);
 
 app.use(express.json());
 
 const prisma = new PrismaClient();
 
-app.listen(3000, function () {
-  console.log("Example app listening on port 3000!");
+app.listen(3008, function () {
+  console.log("Example app listening on port 3008!");
 });
 
 app.post("/customer", async (req, res) => {
