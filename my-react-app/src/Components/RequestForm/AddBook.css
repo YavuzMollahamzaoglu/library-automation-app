@@ -1,27 +1,26 @@
-.user-label{
+.book-label{
     font-size: 18px;
     font-weight: bold;
     font-family: 'Arial', sans-serif;
 }
 
-.textfield-email{
+.textfield-bookName{
     width: 50%;
-    margin-left: 80px;
+    margin-left: 10px;
     margin-bottom: 20px;
 }
-.textfield-user{
+.textfield-body{
     width: 50%;
-    margin-left: 45px;
+    margin-left: 60px;
     margin-bottom: 20px;
 }
-.textfield-password{
+.textfield-author{
     width: 50%;
     margin-left: 45px;
     margin-bottom: 20px;
 }
 
 .header{
-    
     margin-bottom: 30px;
     font-size: 24px;
     font-weight: bold;
@@ -39,8 +38,4 @@
     flex-direction: column;
     align-items: center;
   }
-  
-  
-
- 
   

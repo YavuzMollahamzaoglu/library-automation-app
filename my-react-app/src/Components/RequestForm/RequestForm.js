@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import "./RequestForm.css";
 
 const RequestForm = () => {
   const [userData, setUserData] = useState({
@@ -31,8 +34,10 @@ const RequestForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Username:</label>
-        <input
+        <h1 className='header'>Adding users to system</h1>
+        <label className='user-label'>Username:</label>
+        <TextField id="outlined-basic" label="" variant="outlined" 
+          className='textfield-user'
           type="text"
           name="username"
           value={userData.username}
@@ -41,8 +46,8 @@ const RequestForm = () => {
         />
       </div>
       <div>
-        <label>Password:</label>
-        <input
+        <label className='user-label'>Password:</label>
+        <TextField className='textfield-password' id="outlined-basic" label="" variant="outlined" 
           type="password"
           name="password"
           value={userData.password}
@@ -51,8 +56,8 @@ const RequestForm = () => {
         />
       </div>
       <div>
-        <label>Email:</label>
-        <input
+        <label className='user-label'>Email:</label>
+        <TextField  className="textfield-email" id="outlined-basic" label="" variant="outlined" 
           type="email"
           name="email"
           value={userData.email}
@@ -60,7 +65,7 @@ const RequestForm = () => {
           required
         />
       </div>
-      <button type="submit">Add User</button>
+      <Button className='add-button' variant="contained" type="submit">Add User</Button>
     </form>
   );
 };
