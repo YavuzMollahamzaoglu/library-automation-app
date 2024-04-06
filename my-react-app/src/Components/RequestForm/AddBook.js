@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -7,9 +7,24 @@ import "./AddBook.css";
 const AddBook = () => {
   const [bookData, setBookData] = useState({
     bookName: '',
+    authorId: '',
     body: '',
-    author: '',
   });
+
+  const [authors, setAuthors] = useState([]);
+
+  useEffect(() => {
+    fetchAuthors();
+  }, []);
+
+  const fetchAuthors = async () => {
+    try {
+      const response = await axios.get('http://localhost:3008/author');
+      setAuthors(response.data);
+    } catch (error) {
+      console.error('Error fetching authors:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +37,7 @@ const AddBook = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3008/book', bookData); 
+      const response = await axios.post('http://localhost:3008/books', bookData);
       console.log('Book added:', response.data);
       alert('Book added successfully');
     } catch (error) {
@@ -46,21 +61,20 @@ const AddBook = () => {
         />
       </div>
       <div>
+        <label className='book-label'>Author:</label> 
+        <select className="author-dropdown" name="authorId" onChange={handleInputChange} required>
+          <option value="">Select an author</option>
+          {authors.map(author => (
+            <option key={author.id} value={author.id}>{author.authorName}</option>
+          ))}
+        </select>
+      </div>
+      <div>
         <label className='book-label'>Body:</label> 
         <TextField className='textfield-body' multiline rows={4} id="standard-textarea" label="" variant="outlined" 
           type="text" 
           name="body" 
           value={bookData.body} 
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <label className='book-label'>Author:</label> 
-        <TextField  className="textfield-author" id="outlined-basic" label="" variant="outlined" 
-          type="text" 
-          name="author" 
-          value={bookData.author} 
           onChange={handleInputChange}
           required
         />

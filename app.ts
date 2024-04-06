@@ -288,6 +288,31 @@ app.put("/customer/:customerId/removebook", async (req, res) => {
   }
 });
 
+app.post("/author", async (req, res) => {
+  try {
+    const authorName = req.body.authorName || "DefaultAuthorName";
+    const author = await prisma.author.create({
+      data: {
+        authorName,
+      },
+    });
+    res.send(`Author added to system. Author name: ${authorName}`);
+  } catch (error) {
+    console.error("Error while adding author:", error);
+    res.status(500).send("An error occurred while adding author");
+  }
+});
+
+app.get("/author", async (req, res) => {
+  try {
+    const authors = await prisma.author.findMany();
+    res.json(authors);
+  } catch (error) {
+    console.error("Error while fetching authors:", error);
+    res.status(500).send("An error occurred while fetching authors");
+  }
+});
+
 async function main() {}
 
 main()
@@ -299,3 +324,6 @@ main()
     prisma.$disconnect();
     process.exit(1);
   });
+function addAuthor(authorName: any) {
+  throw new Error("Function not implemented.");
+}
