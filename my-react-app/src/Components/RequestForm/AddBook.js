@@ -32,12 +32,12 @@ const AddBook = () => {
       ...bookData,
       [name]: value,
     });
-  };
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3008/books', bookData);
+      const response = await axios.post('http://localhost:3008/book', bookData);
       console.log('Book added:', response.data);
       alert('Book added successfully');
     } catch (error) {
