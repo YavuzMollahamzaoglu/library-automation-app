@@ -4,7 +4,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #61dafb;
+  background:url("./Components/Assets/background2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.homepage-nav-list{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 160px;
 }
 h1{
   font-size: 50px;
