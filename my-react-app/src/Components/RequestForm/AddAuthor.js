@@ -17,7 +17,7 @@ const AddAuthor = () => {
       await axios.post('http://localhost:3008/author', { authorName });
       console.log('Author added successfully');
       alert('Author added successfully');
-      setAuthorName(''); // Formu sıfırla
+      setAuthorName(''); 
     } catch (error) {
       console.error('Error adding author:', error);
       alert('An error occurred while adding author');
@@ -29,6 +29,7 @@ const AddAuthor = () => {
       <div>
         <h1 className='header'>Add Author</h1>
         <TextField
+          className='textfield'
           label="Author Name"
           variant="outlined"
           value={authorName}

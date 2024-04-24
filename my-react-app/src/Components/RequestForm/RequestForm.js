@@ -35,7 +35,7 @@ const RequestForm = () => {
     <form onSubmit={handleSubmit}>
       <div>
         <h1 className='header'>Adding users to system</h1>
-        <label className='user-label'>Username:</label>
+        <label className='user-label'>Username:
         <TextField id="outlined-basic" label="" variant="outlined" 
           className='textfield-user'
           type="text"
@@ -43,27 +43,27 @@ const RequestForm = () => {
           value={userData.username}
           onChange={handleInputChange}
           required
-        />
+        /></label>
       </div>
       <div>
-        <label className='user-label'>Password:</label>
+        <label className='password-label'>Password:
         <TextField className='textfield-password' id="outlined-basic" label="" variant="outlined" 
           type="password"
           name="password"
           value={userData.password}
           onChange={handleInputChange}
           required
-        />
+        /></label>
       </div>
       <div>
-        <label className='user-label'>Email:</label>
+        <label className='email-label'>Email:
         <TextField  className="textfield-email" id="outlined-basic" label="" variant="outlined" 
           type="email"
           name="email"
           value={userData.email}
           onChange={handleInputChange}
           required
-        />
+        /></label>
       </div>
       <Button className='add-button' variant="contained" type="submit">Add User</Button>
     </form>

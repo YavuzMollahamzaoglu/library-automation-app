@@ -50,7 +50,7 @@ const AddBook = () => {
     <form onSubmit={handleSubmit}>
       <div>
         <h1 className='header'>Adding books to system</h1>
-        <label className='book-label'>Book Name:</label> 
+        <label className='book-label'>Book Name: 
         <TextField id="outlined-basic" label="" variant="outlined" 
           className='textfield-bookName' 
           type="text"
@@ -59,18 +59,20 @@ const AddBook = () => {
           onChange={handleInputChange}
           required
         />
+        </label>
       </div>
       <div>
-        <label className='book-label'>Author:</label> 
+        <label className='author-label'>Author:
         <select className="author-dropdown" name="authorId" onChange={handleInputChange} required>
           <option value="">Select an author</option>
           {authors.map(author => (
             <option key={author.id} value={author.id}>{author.authorName}</option>
           ))}
         </select>
+        </label> 
       </div>
       <div>
-        <label className='book-label'>Body:</label> 
+        <label className='body-label'>Body:
         <TextField className='textfield-body' multiline rows={4} id="standard-textarea" label="" variant="outlined" 
           type="text" 
           name="body" 
@@ -78,6 +80,7 @@ const AddBook = () => {
           onChange={handleInputChange}
           required
         />
+        </label> 
       </div>
       <Button className='add-button' variant="contained" type="submit">Add Book</Button>
     </form>

@@ -9,7 +9,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 const Navbar = () => {
   return (
     <nav className="homepage-nav">
-      <h1 className='homepage-title'>Welcome to the Homepage</h1>
       <ul className="homepage-nav-list">
         <ListItemButton><NavLink to="/">Home Page</NavLink></ListItemButton>
         <ListItemButton><NavLink to="/add-book">Add Book</NavLink></ListItemButton>
@@ -20,17 +19,23 @@ const Navbar = () => {
   );
 };
 
-const HomePage = () => {
+const HomePageContent = () => {
   return (
     <div className='homepage-container'>
-      
+      <h1 className='homepage-title'>Welcome to the Homepage</h1>
       <Navbar />
-      <Routes className="homepage-routes">
-        <Route path="/add-book" element={<AddBook />} />
-        <Route path="/add-author" element={<AddAuthor />} />
-        <Route path="/request-form" element={<RequestForm />} />
-      </Routes>
     </div>
+  );
+};
+
+const HomePage = () => {
+  return (
+    <Routes className="homepage-routes">
+      <Route path="/" element={<HomePageContent />} />
+      <Route path="/add-book" element={<AddBook />} />
+      <Route path="/add-author" element={<AddAuthor />} />
+      <Route path="/request-form" element={<RequestForm />} />
+    </Routes>
   );
 };
 

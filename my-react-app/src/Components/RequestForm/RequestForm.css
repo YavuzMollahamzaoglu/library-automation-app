@@ -2,26 +2,50 @@
     font-size: 18px;
     font-weight: bold;
     font-family: 'Arial', sans-serif;
+    top: -70px;
+    position: relative;
 }
 
 .textfield-email{
-    width: 50%;
+    width: 60%;
     margin-left: 80px;
     margin-bottom: 20px;
+    position: relative;
+    left: 27px;
 }
 .textfield-user{
-    width: 50%;
+    width: 60%;
     margin-left: 45px;
     margin-bottom: 20px;
+    position: relative;
+    left: 10px;
 }
 .textfield-password{
-    width: 50%;
+    width: 60%;
     margin-left: 45px;
     margin-bottom: 20px;
+    position: relative;
+    left: 10px;
+}
+
+.password-label{
+    position: relative;
+    top: -50px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+}
+
+.email-label{
+    position: relative;
+    top: -30px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
 }
 
 .header{
-    
+    left: 580px;
     margin-bottom: 30px;
     font-size: 24px;
     font-weight: bold;
@@ -31,6 +55,9 @@
 .add-button{
     margin-top: 20px;
     width: 200px;
+    position: relative;
+    top: 20px;
+    left: 20px;
 }
 
 

@@ -2,21 +2,38 @@
     font-size: 18px;
     font-weight: bold;
     font-family: 'Arial', sans-serif;
+    position: relative;
+    top: -70px;
+    
 }
 
 .textfield-bookName{
-    width: 50%;
-    margin-left: 10px;
-    margin-bottom: 20px;
+    left: 20px;    
 }
+
+.body-label{
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+}
+
+.author-label{
+    position: relative;
+    top: -40px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+}
+
 .textfield-body{
+    position: absolute;
     width: 50%;
-    margin-left: 60px;
+    left: 20px;
     margin-bottom: 20px;
 }
-.textfield-author{
+.author-dropdown{   
     width: 50%;
-    margin-left: 45px;
+    margin-left: 20px;
     margin-bottom: 20px;
 }
 
@@ -28,7 +45,8 @@
 }
 
 .add-button{
-    margin-top: 20px;
+    position: absolute;
+    top: 80px;
     width: 200px;
 }
 
@@ -39,3 +57,7 @@
     align-items: center;
   }
   
+.header{
+    position: absolute;
+    top: 100px;
+}
